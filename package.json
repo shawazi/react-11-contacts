@@ -1,7 +1,7 @@
 {
   "name": "rp-11-contacts",
   "version": "0.1.0",
-  "homepage": "https://shawazi.github.io/react-10-contacts",
+  "homepage": "https://shawazi.github.io/react-11-contacts",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
