@@ -1,28 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form, Container, Table, Button, Row, Col } from "react-bootstrap";
+import { useFormik } from "formik";
+import { basicSchema } from "../schemas";
+
+const formikSubmit = () => {
+  console.log("submitted");
+}
 
 const Homepage = () => {
-	const [contactInfo, setContactInfo] = useState({
-    userName: "",
-    phone: "",
-    gender: ""
-  })
+  const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      userName: "",
+      phone: "",
+      gender: "",
+    },
+    validationSchema: basicSchema,
+    formikSubmit
+  });
 
-
-
-	const handleSubmit = (e) => {
-    e.preventDefault()
-		console.log(contactInfo);
-	};
+  console.log(errors)
 
 	return (
 		<>
-			<Container className="d-flex mt-5 justify-content-between">
-				<Row>
+			<Container>
+				<Row className="h-100">
 					<Col
 						md={6}
 						s={4}
-						className="d-flex flex-column align-items-center justify-content-center gap-3 mt-5"
+						className="d-flex flex-column align-items-center gap-3 mt-5"
 					>
 						<div className="hero-image"></div>
 						<h1
@@ -38,53 +43,52 @@ const Homepage = () => {
 							onSubmit={handleSubmit}
 							className="d-flex flex-column justify-content-center"
 						>
-							<Form.Group
-								className="mb-3"
-								controlId="formName"
-							>
-								<Form.Control
-                  onChange={(e) => setContactInfo({...contactInfo, userName: e.target.value})}
-                  value={contactInfo["userName"]}
-                  name="userName"
-									type="text"
-									placeholder="Enter Username"
-								/>
-							</Form.Group>
-							<Form.Text className="text-muted bg-black p-2 rounded">
+							<Form.Text className="text-muted bg-black p-2 rounded mb-2">
 								We'll never share your name with anyone else.*
 							</Form.Text>
-
+							<Form.Group className="mb-3" controlId="formName">
+								<Form.Control
+									onChange={handleChange}
+                  onBlur={handleBlur}
+									value={values.userName}
+									name="userName"
+									type="text"
+									placeholder="Enter Username"
+                  className=""
+								/>
+							</Form.Group>
 							<Form.Group
 								className="mb-3"
 								controlId="formPhoneNumber"
 							>
 								{/* <Form.Label>Phone Number</Form.Label> */}
 								<Form.Control
-                  onChange={(e) => setContactInfo({...contactInfo, phone: e.target.value})}
-									value={contactInfo["phone"]}
-                  name="phone"
-                  type="text"
+									onChange={handleChange}
+									onBlur={handleBlur}
+                  value={values.phone}
+									name="phone"
+									type="text"
 									placeholder="Enter Phone Number"
 								/>
 							</Form.Group>
 
-              <Form.Group
-              value={contactInfo["gender"]}
-              name="gender"
-              onChange={(e) => setContactInfo({...contactInfo, gender: e.target.value})}
-              >
-                <Form.Select defaultValue={"Gender"}>
-                  <option disabled>Gender</option>
-                  <option >Male</option>
-                  <option >Female</option>
-                  <option >Other</option>
-                </Form.Select>
-              </Form.Group>
-
-
+							<Form.Group
+								value={values.gender}
+                type="text"
+								name="gender"
+								onChange={handleChange}
+                onBlur={handleBlur}
+							>
+								<Form.Select name="gender" defaultValue={"Gender"}>
+									<option disabled>Gender</option>
+									<option>Male</option>
+									<option>Female</option>
+									<option>Other</option>
+								</Form.Select>
+							</Form.Group>
 
 							<Button
-								className="bg-black border-dark w-25 mx-auto"
+								className="bg-black border-dark w-25 mx-auto mt-2"
 								variant="primary"
 								type="submit"
 							>
@@ -99,7 +103,7 @@ const Homepage = () => {
 					<Col
 						md={6}
 						s={4}
-						className="d-flex flex-column align-items-center mt-5"
+						className="d-flex flex-column align-items-center mt-5 align-self-center"
 					>
 						<h2 className="bg-black p-1 rounded">
 							&lt;Contact List /&gt;

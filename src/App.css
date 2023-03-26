@@ -19,7 +19,7 @@ body {
 	width: 100vw;
 	height: 100vh;
 	background-image: url("./assets/space.jpg");
-	background-repeat: no-repeat;
+	background-repeat: no-repeat repeat;
 	background-size: cover;
 	overflow-x: hidden;
 	overflow-y: auto;
