@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { Form, Container, Table, Button, Row, Col } from "react-bootstrap";
 
 const Homepage = () => {
-	const [userName, setUserName] = useState("");
-	const [phone, setPhone] = useState("");
+	const [contactInfo, setContactInfo] = useState({
+    userName: "",
+    phone: "",
+    gender: ""
+  })
 
 
 
 	const handleSubmit = (e) => {
     e.preventDefault()
-		console.log(userName, phone);
+		console.log(contactInfo);
 	};
 
 	return (
@@ -39,12 +42,12 @@ const Homepage = () => {
 								className="mb-3"
 								controlId="formName"
 							>
-								<Form.Label>Name</Form.Label>x``
 								<Form.Control
-                  onChange={(e) => setUserName(e.target.value)}
-                  value={userName}
+                  onChange={(e) => setContactInfo({...contactInfo, userName: e.target.value})}
+                  value={contactInfo["userName"]}
+                  name="userName"
 									type="text"
-									placeholder="Enter Name"
+									placeholder="Enter Username"
 								/>
 							</Form.Group>
 							<Form.Text className="text-muted bg-black p-2 rounded">
@@ -55,14 +58,30 @@ const Homepage = () => {
 								className="mb-3"
 								controlId="formPhoneNumber"
 							>
-								<Form.Label>Phone Number</Form.Label>
+								{/* <Form.Label>Phone Number</Form.Label> */}
 								<Form.Control
-                  onChange={(e) => setPhone(e.target.value)}
-									value={phone}
+                  onChange={(e) => setContactInfo({...contactInfo, phone: e.target.value})}
+									value={contactInfo["phone"]}
+                  name="phone"
                   type="text"
-									placeholder="Phone Number"
+									placeholder="Enter Phone Number"
 								/>
 							</Form.Group>
+
+              <Form.Group
+              value={contactInfo["gender"]}
+              name="gender"
+              onChange={(e) => setContactInfo({...contactInfo, gender: e.target.value})}
+              >
+                <Form.Select defaultValue={"Gender"}>
+                  <option disabled>Gender</option>
+                  <option >Male</option>
+                  <option >Female</option>
+                  <option >Other</option>
+                </Form.Select>
+              </Form.Group>
+
+
 
 							<Button
 								className="bg-black border-dark w-25 mx-auto"
