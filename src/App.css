@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Alkatra&family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Delicious+Handrawn&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap");
+
+/* 
+font-family: 'Alkatra', cursive;
+font-family: 'Anonymous Pro', monospace;
+font-family: 'Delicious Handrawn', cursive;
+font-family: 'EB Garamond', serif;
+font-family: 'Lato', sans-serif; 
+*/
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Anonymous Pro", monospace;
+	width: 100vw;
+	height: 100vh;
+	background-image: url("./assets/space.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.container div h1 span {
+	font-family: "Alkatra", cursive;
+}
+
+.hero-image {
+	background-image: url("./assets/demented.jpg"); /* The image used */
+	background-color: #cccccc; /* Used if the image is unavailable */
+	height: 100px; /* You must set a specified height */
+	width: 80px;
+	background-position: center; /* Center the image */
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+/* .customPositioning {
+    width: 400px;
+	position: fixed;
+	top: 60%;
+	left: 80%;
+	transform: translate(-50%, -50%);
+} */
