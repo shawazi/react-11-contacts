@@ -3,6 +3,7 @@ import { Form, Container, Table, Button, Row, Col } from "react-bootstrap";
 import { useFormik } from "formik";
 import { basicSchema } from "../schemas";
 import axios from "axios";
+import { toast, ToastContainer } from 'react-toastify';
 
 const Homepage = () => {
   const [data, setData] = useState([]);
@@ -20,6 +21,8 @@ const Homepage = () => {
     console.log(response);
     // JSON.parse(JSON.stringify(response));
   }
+
+  toast.error("hi");
 
   const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
@@ -174,6 +177,7 @@ const Homepage = () => {
 					</Col>
 				</Row>
 			</Container>
+			<ToastContainer position="bottom-right" theme="dark" autoClose={7000} newestOnTop={true} />
 		</>
 	);
 };
