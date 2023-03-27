@@ -36,7 +36,7 @@ const Homepage = () => {
 
   console.log(errors)
 
-  const mainURL = "https://22112.fullstack.clarusway.com";
+  const mainURL = "https://22112.fullstack.clarusway.com/contacts/";
 
 //   useEffect(() => {
 //     fetch(mainURL)
