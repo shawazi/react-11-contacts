@@ -8,15 +8,22 @@ const Homepage = () => {
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(true);
 
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+
   async function submitForm() {
-    const response = await axios.post(mainURL, values);
+    console.log(values)
+    const response = await axios.post(mainURL, values, config);
     console.log(response);
     // JSON.parse(JSON.stringify(response));
   }
 
   const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
-      userName: "",
+      username: "",
       phone: "",
       gender: "",
     },
@@ -75,11 +82,11 @@ const Homepage = () => {
 								<Form.Control
 									onChange={handleChange}
                   onBlur={handleBlur}
-									value={values.userName}
-									name="userName"
+									value={values.username}
+									name="username"
 									type="text"
 									placeholder="Enter Username"
-                  className={errors.userName && touched.userName ? "input-error" : ""}
+                  className={errors.username && touched.username ? "input-error" : ""}
 								/>
 							</Form.Group>
 							<Form.Group
@@ -94,7 +101,7 @@ const Homepage = () => {
 									name="phone"
 									type="text"
 									placeholder="Enter Phone Number"
-                  className={errors.userName && touched.userName ? "input-error" : ""}
+                  className={errors.username && touched.username ? "input-error" : ""}
 								/>
 							</Form.Group>
 
@@ -107,9 +114,8 @@ const Homepage = () => {
                 onBlur={handleBlur} 
                 defaultValue={"Gender"}>
 									<option disabled>Gender</option>
-									<option>Male</option>
-									<option>Female</option>
-									<option>Other</option>
+									<option>MALE</option>
+									<option>FEMALE</option>
 								</Form.Select>
 							</Form.Group>
 
