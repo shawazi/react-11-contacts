@@ -1,24 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Container, Table, Button, Row, Col } from "react-bootstrap";
 import { useFormik } from "formik";
 import { basicSchema } from "../schemas";
 
-const formikSubmit = () => {
-  console.log("submitted");
-}
-
 const Homepage = () => {
-  const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik({
+  const [data, setData] = useState([]);
+  const [flag, setFlag] = useState(true);
+
+
+  const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       userName: "",
       phone: "",
       gender: "",
     },
     validationSchema: basicSchema,
-    formikSubmit
+    onSubmit: values => {
+      try {
+        console.log(values.gender === "Gender" ? null : alert(JSON.stringify(values, null, 2)));
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
   });
 
   console.log(errors)
+
+  const mainURL = "https://22112.fullstack.clarusway.com";
+
+  useEffect(() => {
+    fetch(mainURL)
+        .then(res => res.json())
+        .then(array => setData(array))
+        .then(console.log(data));
+}, [flag, data])
 
 	return (
 		<>
@@ -54,7 +69,7 @@ const Homepage = () => {
 									name="userName"
 									type="text"
 									placeholder="Enter Username"
-                  className=""
+                  className={errors.userName && touched.userName ? "input-error" : ""}
 								/>
 							</Form.Group>
 							<Form.Group
@@ -69,17 +84,18 @@ const Homepage = () => {
 									name="phone"
 									type="text"
 									placeholder="Enter Phone Number"
+                  className={errors.userName && touched.userName ? "input-error" : ""}
 								/>
 							</Form.Group>
 
-							<Form.Group
-								value={values.gender}
-                type="text"
-								name="gender"
-								onChange={handleChange}
-                onBlur={handleBlur}
-							>
-								<Form.Select name="gender" defaultValue={"Gender"}>
+							<Form.Group>
+								<Form.Select 
+                name="gender"
+                type="string"
+                // value={values.gender}
+                onChange={handleChange}
+                onBlur={handleBlur} 
+                defaultValue={"Gender"}>
 									<option disabled>Gender</option>
 									<option>Male</option>
 									<option>Female</option>
@@ -88,6 +104,7 @@ const Homepage = () => {
 							</Form.Group>
 
 							<Button
+                disabled={isSubmitting}
 								className="bg-black border-dark w-25 mx-auto mt-2"
 								variant="primary"
 								type="submit"
