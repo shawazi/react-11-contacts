@@ -2,58 +2,79 @@ import React, { useState, useEffect } from "react";
 import { Form, Container, Table, Button, Row, Col } from "react-bootstrap";
 import { useFormik } from "formik";
 import { basicSchema } from "../schemas";
-import axios from "axios";
-import { toast, ToastContainer } from 'react-toastify';
+// import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 const Homepage = () => {
-  const [data, setData] = useState([]);
-  const [flag, setFlag] = useState(true);
+	const [data, setData] = useState([]);
+	// const [flag, setFlag] = useState(true);
 
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
+	// const config = {
+	// 	headers: {
+	// 		"Content-Type": "application/json",
+	// 	},
+	// };
 
-  async function submitForm() {
-    console.log(values)
-    const response = await axios.post(mainURL, values, config);
-    console.log(response);
-    // JSON.parse(JSON.stringify(response));
-  }
+	function submitForm() {
+		localStorage.setItem("contacts", JSON.stringify([...data, values]))
+		setData([...data, values]);
+		// const response = await axios.post(mainURL, values, config);
+		// console.log(response);
+		// JSON.parse(JSON.stringify(response));
+		
+	}
 
-  toast.error("hi");
+	useEffect(() => {
+		const contacts = localStorage.getItem("contacts");
+		if (contacts) {
+			setData(JSON.parse(contacts))
+		}
+	}, []);
 
-  const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
-    initialValues: {
-      username: "",
-      phone: "",
-      gender: "",
-    },
-    validationSchema: basicSchema,
-    onSubmit: values => {
-      try {
-        if (values.gender === "Gender") { 
-          console.log("Please enter a gender")
-        } else {
-          submitForm();
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-  });
+	
+	const {
+		values,
+		errors,
+		touched,
+		isSubmitting,
+		handleBlur,
+		handleChange,
+		handleSubmit,
+		resetForm
+	} = useFormik({
+		initialValues: {
+			username: "",
+			phone: "",
+			gender: "",
+		},
+		validationSchema: basicSchema,
+		onSubmit: (values) => {
+			try {
+				if (values.gender === "Gender") {
+					toast.error("Please enter a gender");
+					console.log(values);
+				} else {
+					submitForm();
+					resetForm();
+					toast.success("Contact added!")
+				}
+			} catch (error) {
+				toast.error(error.message);
+			}
+		},
+		onSubmitError: error => {
+			toast.error(error.message)
+		}
+	});
 
-  console.log(errors)
+	// const mainURL = "https://22112.fullstack.clarusway.com/contacts/";
 
-  const mainURL = "https://22112.fullstack.clarusway.com/contacts/";
-
-//   useEffect(() => {
-//     fetch(mainURL)
-//         .then(res => res.json())
-//         .then(array => setData(array))
-//         .then(console.log(data));
-// }, [flag, data])
+	//   useEffect(() => {
+	//     fetch(mainURL)
+	//         .then(res => res.json())
+	//         .then(array => setData(array))
+	//         .then(console.log(data));
+	// }, [flag, data])
 
 	return (
 		<>
@@ -84,12 +105,16 @@ const Homepage = () => {
 							<Form.Group className="mb-3" controlId="formName">
 								<Form.Control
 									onChange={handleChange}
-                  onBlur={handleBlur}
+									onBlur={handleBlur}
 									value={values.username}
 									name="username"
 									type="text"
 									placeholder="Enter Username"
-                  className={errors.username && touched.username ? "input-error" : ""}
+									className={
+										errors.username && touched.username
+											? "input-error"
+											: ""
+									}
 								/>
 							</Form.Group>
 							<Form.Group
@@ -100,22 +125,27 @@ const Homepage = () => {
 								<Form.Control
 									onChange={handleChange}
 									onBlur={handleBlur}
-                  value={values.phone}
+									value={values.phone}
 									name="phone"
 									type="text"
 									placeholder="Enter Phone Number"
-                  className={errors.username && touched.username ? "input-error" : ""}
+									className={
+										errors.username && touched.username
+											? "input-error"
+											: ""
+									}
 								/>
 							</Form.Group>
 
 							<Form.Group>
-								<Form.Select 
-                name="gender"
-                type="string"
-                // value={values.gender}
-                onChange={handleChange}
-                onBlur={handleBlur} 
-                defaultValue={"Gender"}>
+								<Form.Select
+									name="gender"
+									type="string"
+									// value={values.gender}
+									onChange={handleChange}
+									onBlur={handleBlur}
+									defaultValue={"Gender"}
+								>
 									<option disabled>Gender</option>
 									<option>MALE</option>
 									<option>FEMALE</option>
@@ -123,7 +153,7 @@ const Homepage = () => {
 							</Form.Group>
 
 							<Button
-                disabled={isSubmitting}
+								disabled={isSubmitting}
 								className="bg-black border-dark w-25 mx-auto mt-2"
 								variant="primary"
 								type="submit"
@@ -148,36 +178,38 @@ const Homepage = () => {
 							<thead>
 								<tr>
 									<th>#</th>
-									<th>First Name</th>
-									<th>Last Name</th>
 									<th>Username</th>
+									<th>Phone</th>
+									<th>Gender</th>
+									<th>Edit</th>
+									<th>Delete</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>Jacob</td>
-									<td>Thornton</td>
-									<td>@fat</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>Larry the Bird</td>
-									<td>Not a Bird</td>
-									<td>@twitter</td>
-								</tr>
+								{data &&
+									data.map((contact, index) => {
+										return (
+											<tr key={index + 1}>
+												<th>{index + 1}</th>
+												<th>{contact.username}</th>
+												<th>{contact.phone}</th>
+												<th>{contact.gender}</th>
+												<th></th>
+												<th></th>
+											</tr>
+										);
+									})}
 							</tbody>
 						</Table>
 					</Col>
 				</Row>
 			</Container>
-			<ToastContainer position="bottom-right" theme="dark" autoClose={7000} newestOnTop={true} />
+			<ToastContainer
+				position="bottom-right"
+				theme="dark"
+				autoClose={7000}
+				newestOnTop={true}
+			/>
 		</>
 	);
 };
