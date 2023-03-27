@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 import { Form, Container, Table, Button, Row, Col } from "react-bootstrap";
 import { useFormik } from "formik";
 import { basicSchema } from "../schemas";
+import axios from "axios";
 
 const Homepage = () => {
   const [data, setData] = useState([]);
   const [flag, setFlag] = useState(true);
 
+  async function submitForm() {
+    const response = await axios.post(mainURL, values);
+    console.log(response);
+    // JSON.parse(JSON.stringify(response));
+  }
 
   const { values, errors, touched, isSubmitting, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
@@ -17,7 +23,11 @@ const Homepage = () => {
     validationSchema: basicSchema,
     onSubmit: values => {
       try {
-        console.log(values.gender === "Gender" ? null : alert(JSON.stringify(values, null, 2)));
+        if (values.gender === "Gender") { 
+          console.log("Please enter a gender")
+        } else {
+          submitForm();
+        }
       } catch (error) {
         console.log(error.message);
       }
@@ -28,12 +38,12 @@ const Homepage = () => {
 
   const mainURL = "https://22112.fullstack.clarusway.com";
 
-  useEffect(() => {
-    fetch(mainURL)
-        .then(res => res.json())
-        .then(array => setData(array))
-        .then(console.log(data));
-}, [flag, data])
+//   useEffect(() => {
+//     fetch(mainURL)
+//         .then(res => res.json())
+//         .then(array => setData(array))
+//         .then(console.log(data));
+// }, [flag, data])
 
 	return (
 		<>
